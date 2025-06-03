@@ -1,11 +1,11 @@
 import { useTasks } from "@/context/taskContext";
 import { edit, star, trash } from "@/utils/Icons";
-import { Task } from "@/utils/types";
+import { Task,Project } from "@/utils/types";
 import { formatTime } from "@/utils/utilities";
 import React from "react";
 import { motion } from "framer-motion";
 import { item } from "@/utils/animations";
-
+import { useProjects } from "@/context/projectContext"; 
 interface TaskItemProps {
   task: Task;
 }
@@ -25,6 +25,9 @@ function TaskItem({ task }: TaskItemProps) {
   };
 
   const { getTask, openModalForEdit, deleteTask, modalMode } = useTasks();
+  const { projects } = useProjects();
+  const project = projects.find((p:Project) => p._id === task.projectId);
+
   const taskId =task._id
   return (
     <motion.div
@@ -34,6 +37,11 @@ function TaskItem({ task }: TaskItemProps) {
       <div>
         <h4 className="font-bold text-2xl">{task.title}</h4>
         <p>{task.description}</p>
+        {project && (
+            <p className="text-sm text-gray-500 italic">
+              Project: <span className="font-medium text-black">{project.title}</span>
+            </p>
+          )}
       </div>
       <div className="mt-auto flex justify-between items-center">
         <p className="text-sm text-gray-400">{formatTime(task.createdAt)}</p>

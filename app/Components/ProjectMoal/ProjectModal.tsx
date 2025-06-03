@@ -1,24 +1,18 @@
 "use client";
-import { useTasks } from "@/context/taskContext";
+import { useProjects } from "@/context/projectContext";
 import useDetectOutside from "@/hooks/useDetectOutside";
 import React, { useEffect } from "react";
-import {useProjects} from "@/context/projectContext"  
-import { Project } from "@/utils/types";
 
-interface ProjectItemProps {
-  project: Project;
-}
-function Modal({ project }: ProjectItemProps) {
+function ProjectModal() {
   const {
-    task,
+    project,
     handleInput,
-    createTask,
+    createProject,
     isEditing,
     closeModal,
     modalMode,
-    activeTask,
-    updateTask,
-  } = useTasks();
+    activeProject ,
+    updateProject} = useProjects();
   const ref = React.useRef(null);
 
   // Use the hook to detect clicks outside the modal
@@ -32,22 +26,22 @@ function Modal({ project }: ProjectItemProps) {
   // });
 
   useEffect(() => {
-    if (modalMode === "edit" && activeTask) {
-      handleInput("setTask")(activeTask);
+    if (modalMode === "edit" && activeProject) {
+      handleInput("setProject")(activeProject);
     }
-  }, [modalMode, activeTask]);
+  }, [modalMode, activeProject]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (modalMode === "edit") {
-      updateTask(task);
+      updateProject(project);
     } else if (modalMode === "add") {
-      createTask(task);
+      createProject(project);
     }
     closeModal();
   };
-  const {projects}=useProjects()
+
   return (
     <div className="fixed left-0 top-0 z-50 h-full w-full bg-[#333]/30 overflow-hidden">
       <form
@@ -64,7 +58,7 @@ function Modal({ project }: ProjectItemProps) {
             id="title"
             placeholder="Task Title"
             name="title"
-            value={task.title || ""}
+            value={project.title || ""}
             onChange={(e) => handleInput("title")(e)}
           />
         </div>
@@ -75,72 +69,21 @@ function Modal({ project }: ProjectItemProps) {
             name="description"
             placeholder="Task Description"
             rows={4}
-            value={task.description || ""}
+            value={project.description || ""}
             onChange={(e) => handleInput("description")(e)}
           />
         </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="priority">Select Priority</label>
-          <select
-            className="bg-[#F9F9F9] p-2 rounded-md border cursor-pointer"
-            name="priority"
-            value={task.priority ||"low" }
-            onChange={(e) => handleInput("priority")(e)}
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
+      
         <div className="flex flex-col gap-1">
           <label htmlFor="dueDate">Due Date</label>
           <input
             className="bg-[#F9F9F9] p-2 rounded-md border"
             type="date"
             name="dueDate"
-            value={task.dueDate || "" }
+            value={project.dueDate || "" }
             onChange={(e) => handleInput("dueDate")(e)}
           />
         </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="completed">Task Completed</label>
-          <div className="flex items-center justify-between bg-[#F9F9F9] p-2 rounded-md border">
-            <label htmlFor="completed">Completed</label>
-            <div>
-              <select
-                className="bg-[#F9F9F9] p-2 rounded-md border cursor-pointer"
-                name="completed"
-                value={task.completed ? "true" : "false"}
-                onChange={(e) => handleInput("completed")(e)}
-              >
-                <option value="false">No</option>
-                <option value="true">Yes</option>
-              </select>
-            </div>
-            
-          </div>
-        </div>
-        <div className="flex flex-col gap-1">
-  <label htmlFor="project">Project</label>
-  <div className="flex items-center justify-between bg-[#F9F9F9] p-2 rounded-md border">
-    <select
-      className="bg-[#F9F9F9] p-2 rounded-md border w-full cursor-pointer"
-      name="projectId"
-      value={task.projectId || ""}
-      onChange={(e) => handleInput("projectId")(e)}
-    >
-          <option value="">-- Select a project --</option>
-          {projects.map((project: Project) => (
-      <option key={project._id} value={project._id}>
-        {project.title}
-      </option>
-    ))}
-
-    </select>
-  </div>
-</div>
-
-
 
         <div className="mt-8">
           <button
@@ -149,7 +92,7 @@ function Modal({ project }: ProjectItemProps) {
               modalMode === "edit" ? "bg-blue-400" : "bg-green-400"
             }`}
           >
-            {modalMode === "edit" ? "Update Task" : "Create Task"}
+            {modalMode === "edit" ? "Update Project" : "Create Project"}
           </button>
           <button
               className="mt-3 py-2 px-4 bg-transparent text-black text-sm font-medium rounded-md border-2 border-[#323232]/10
@@ -164,4 +107,4 @@ function Modal({ project }: ProjectItemProps) {
   );
 }
 
-export default Modal;
+export default ProjectModal;

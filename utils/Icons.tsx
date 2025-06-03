@@ -11,3 +11,4 @@ export const badge = <i className="fa-solid fa-certificate"></i>;
 export const mail = <i className="fa-regular fa-envelope"></i>;
 export const profile = <i className="fa-solid fa-user"></i>;
 export const home = <i className="fas fa-home"></i>;
+export const project = <i className="fa-solid fa-diagram-project"></i>;

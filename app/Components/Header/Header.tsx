@@ -1,5 +1,7 @@
 "use client";
 import { useTasks } from "@/context/taskContext";
+import { useProjects } from "@/context/projectContext";
+
 import { useUserContext } from "@/context/userContext";
 import { github, moon, profile } from "@/utils/Icons";
 import Link from "next/link";
@@ -7,11 +9,14 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Hand } from 'lucide-react';
 import Modal from "../Modal/Modal"
+import ProjectModal from "../ProjectMoal/ProjectModal";
 
 
 function Header() {
   const { user } = useUserContext();
   const { openModalForAdd, activeTasks, isEditing } = useTasks();
+  const { openModalForAddProject, activeProject, isEditingProject } = useProjects();
+
 
   const router = useRouter();
 
@@ -57,6 +62,20 @@ function Header() {
           {userId ? "New Task" : "Login"}
         </button>
 
+        <button
+          className="px-8 py-3 bg-[#3aafae] text-white rounded-[50px]
+          hover:bg-[#00A1F1] hover:text-white transition-all duration-200 ease-in-out"
+          onClick={() => {
+            if (userId) {
+              openModalForAddProject();
+            } else {
+              router.push("/login");
+            }
+          }}
+        >
+          {userId ? "New Project" : "hi"}
+        </button>
+
         <div className="flex gap-4 items-center">
           <Link
             href="https://github.com/Maclinz/taskfyer"
@@ -88,6 +107,7 @@ function Header() {
         </div>
         {/* Affichage conditionnel du modal */}
       {isEditing && <Modal />}
+      {isEditingProject && <ProjectModal/>}
       </div>
     </header>
   );

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { createContext, useEffect,useState } from "react";
 import { useUserContext } from "./userContext";
 import toast from "react-hot-toast";
-
+import {useProjects} from "./projectContext"
 const TasksContext = createContext();
 
 //const serverUrl = "https://taskfyer.onrender.com/api/v1";
@@ -13,6 +13,7 @@ export const TasksProvider = ({ children }) => {
 
   const userId = useUserContext().user._id;
   const {token}=useUserContext()
+  const {projects} = useProjects()
 
   const initialTask = {
     title: "",
@@ -37,7 +38,6 @@ export const TasksProvider = ({ children }) => {
     setModalMode("add");
     setIsEditing(true);
     setTask(initialTask);
-    console.log(modalMode);
   };
 
   const openModalForEdit = (task) => {

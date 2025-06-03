@@ -3,6 +3,7 @@ import IconCheck from "@/public/icons/IconCheck";
 import IconDeleteAll from "@/public/icons/IconDeleteAll";
 import IconFileCheck from "@/public/icons/IconFileCheck";
 import IconGrid from "@/public/icons/IconGrid";
+import IconProject from "@/public/icons/IconProject"
 import IconStopwatch from "@/public/icons/IconStopwatch";
 import { link } from "fs";
 import Image from "next/image";
@@ -22,6 +23,11 @@ function MiniSidebar() {
       icon: <IconGrid strokeColor={getStrokeColor("/")} />,
       title: "All",
       link: "/",
+    },
+    {
+      icon: <IconProject strokeColor={getStrokeColor("/allProject")} />,
+      title: "Projects",
+      link: "/allProject",
     },
     {
       icon: <IconFileCheck strokeColor={getStrokeColor("/completed")} />,
@@ -52,6 +58,7 @@ function MiniSidebar() {
               <Link href={item.link}>{item.icon}</Link>
 
               {/* Hover Tooltip */}
+              
               <span className="u-triangle absolute top-[50%] translate-y-[-50%] left-8 text-xs pointer-events-none text-white bg-[#3aafae] px-2 py-1 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 {item.title}
               </span>

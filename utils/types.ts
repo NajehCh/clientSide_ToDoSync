@@ -8,6 +8,15 @@ interface Task {
   priority: string;
   createdAt: string;
   updatedAt: string;
+  projectId:string
 }
 
-export type { Task };
+interface Project {
+  _id: string;
+  title: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type { Task ,Project};
