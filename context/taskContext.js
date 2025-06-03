@@ -32,6 +32,8 @@ export const TasksProvider = ({ children }) => {
   const [priority, setPriority] = React.useState("all");
   const [activeTask, setActiveTask] = React.useState(null);
   const [modalMode, setModalMode] = React.useState("");
+  const [currentProject, setCurrentProject] = useState(null); // 👈 type Project si tu veux typer
+
   const [profileModal, setProfileModal] = React.useState(false);
 
   const openModalForAdd = () => {
@@ -218,7 +220,9 @@ useEffect(()=>{
         openProfileModal,
         activeTasks,
         completedTasks,
-        profileModal,
+        profileModal, 
+        currentProject, 
+        setCurrentProject  
       }}
     >
       {children}
