@@ -47,27 +47,31 @@ pipeline {
         }
 
         stage('Déployer sur EC2') {
-            steps {
-                dir('client') {
-                    sshagent(credentials: ['ssh-key']) {
-                        sh '''
-                            echo "Création du répertoire distant"
-                            ssh -o StrictHostKeyChecking=no ubuntu@3.224.198.125 'mkdir -p /home/ubuntu/frontend'
+                steps {
+                    dir('client') {
+                        sshagent(credentials: ['ssh-key']) {
+                            sh '''
+                                echo "[1/4] Création du répertoire distant"
+                                ssh -o StrictHostKeyChecking=no ubuntu@3.224.198.125 'mkdir -p /home/ubuntu/frontend'
 
-                            echo "Copie des fichiers nécessaires vers EC2"
-                            rsync -avz --exclude=node_modules --exclude=.git --exclude=.next . ubuntu@3.224.198.125:/home/ubuntu/frontend/
+                                echo "[2/4] Copie des fichiers nécessaires vers EC2"
+                                rsync -avz --exclude=node_modules --exclude=.git --exclude=.next . ubuntu@3.224.198.125:/home/ubuntu/frontend/
 
-                            echo "Installation des dépendances sur EC2"
-                            ssh -o StrictHostKeyChecking=no ubuntu@3.224.198.125 "cd /home/ubuntu/frontend && npm install --production"
+                                echo "[3/4] Installation des dépendances sur EC2"
+                                ssh -o StrictHostKeyChecking=no ubuntu@3.224.198.125 "cd /home/ubuntu/frontend && npm install --production"
 
-                            echo "Démarrage du serveur en mode développement"
-                            ssh -o StrictHostKeyChecking=no ubuntu@3.224.198.125 "cd /home/ubuntu/frontend && npm run dev &"
-
-                            echo "Déploiement terminé avec succès"
-                        '''
+                                echo "[4/4] Lancement du serveur avec PM2"
+                                ssh -o StrictHostKeyChecking=no ubuntu@3.224.198.125 "
+                                    cd /home/ubuntu/frontend &&
+                                    pm2 delete todo-frontend || true &&
+                                    pm2 start npm --name todo-frontend -- start &&
+                                    pm2 save
+                                "
+                            '''
+                        }
                     }
-                }
             }
         }
+
     }
 }
