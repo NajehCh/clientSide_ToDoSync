@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Hand } from 'lucide-react';
 import Modal from "../Modal/Modal"
-import ProjectModal from "../ProjectMoal/ProjectModal";
+import ProjectModal from "../ProjectModal/ProjectModal";
 
 
 function Header() {
