@@ -114,7 +114,7 @@ function Header() {
         </div>
         {/* Affichage conditionnel du modal */}
       {/* {isEditing && activeTask &&  <Modal />} */}
-      {isEditingProject && activeProject && <ProjectModal />}
+      {isEditingProject && <ProjectModal />}
 
       </div>
     </header>
