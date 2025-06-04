@@ -80,7 +80,7 @@ function Header() {
             }
           }}
         >
-          {userId ? "New Project" : "hi"}
+          {userId ? "New Project" : "Register"}
         </button>
 
         <div className="flex gap-4 items-center">
