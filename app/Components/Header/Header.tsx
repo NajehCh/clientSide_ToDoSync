@@ -1,6 +1,7 @@
 "use client";
 import { useTasks } from "@/context/taskContext";
 import { useProjects } from "@/context/projectContext";
+import { Task,Project } from "@/utils/types";
 
 import { useUserContext } from "@/context/userContext";
 import { github, moon, profile } from "@/utils/Icons";
@@ -11,10 +12,16 @@ import { Hand } from 'lucide-react';
 import Modal from "../Modal/Modal"
 import ProjectModal from "../ProjectModal/ProjectModal";
 
+interface ProjectItemProps {
+  project: Project;
+}
+interface ProjectItemProps {
+  project: Project;
+}
 
 function Header() {
   const { user } = useUserContext();
-  const { openModalForAdd, activeTasks, isEditing } = useTasks();
+  const { openModalForAdd ,activeTask,activeTasks, isEditing } = useTasks();
   const { openModalForAddProject, activeProject, isEditingProject } = useProjects();
 
 
@@ -106,8 +113,9 @@ function Header() {
           </Link>
         </div>
         {/* Affichage conditionnel du modal */}
-      {/* {isEditing && <Modal />}
-      {isEditingProject && <ProjectModal/>} */}
+      {/* {isEditing && activeTask &&  <Modal />} */}
+      {isEditingProject && activeProject && <ProjectModal />}
+
       </div>
     </header>
   );
